@@ -24,9 +24,17 @@
         <%= question.get("ORDERS")%>, <%=question.get("QUESTIONS")%>
     </div>
     <div>
-        (1) 전혀 아니다
-        (2) 아니다
-        (3) 보통이다
+    <% 
+        ArrayList<HashMap> answer_List = null;
+        answer_List = (ArrayList<HashMap>)request.getAttribute("answer_List");
+    %>
+    <% 
+        for(int i =0 ; i< answer_List.size();i++) {  
+            HashMap<String,Object> answer =  answer_List.get(i);
+        
+    %>
+        <div><%= "("+answer.get("ORDERS")+")" %> <%= answer.get("EXAMPLE") %> </div>
+    <% } %>
     </div>
 </body>
 

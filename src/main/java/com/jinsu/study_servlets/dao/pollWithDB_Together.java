@@ -1,11 +1,35 @@
 package com.jinsu.study_servlets.dao;
 
+import java.lang.Thread.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class pollWithDB_Together {
+    public ArrayList<HashMap> getAnswer(String questionUid) throws SQLException {
+        Commons commons = new Commons();
+        Statement statement = commons.getStatement();
+        String query = "SELECT ANSWERS.QUESTIONS_UID, EXAMPLE_LIST.ORDERS, EXAMPLE_LIST.EXAMPLE  "+
+                    "FROM ANSWERS " +
+	                "INNER JOIN EXAMPLE_LIST " +
+	                "ON ANSWERS.EXAMPLE_UID = EXAMPLE_LIST.EXAMPLE_UID "+
+	                "WHERE QUESTIONS_UID = '"+questionUid+"' "+
+                    "ORDER BY QUESTIONS_UID ";
+    ResultSet resultSet = statement.executeQuery(query);
+
+    ArrayList<HashMap> answer_list = new ArrayList<>();
+    while(resultSet.next()) {
+        HashMap<String, Object> answer = new HashMap<>();
+        answer.put("QUESTIONS_UID", resultSet.getString("QUESTIONS_UID"));
+        answer.put("ORDERS", resultSet.getInt("ORDERS"));
+        answer.put("EXAMPLE", resultSet.getString("EXAMPLE"));
+
+        answer_list.add(answer);
+    }
+    return answer_list;
+    }
     public HashMap<String, Object> getQuestion(String questionsUid) throws SQLException{
 
         Commons commons = new Commons();
